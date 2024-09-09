@@ -186,7 +186,7 @@ export function TravellerEditInterface() {
     if (acceptedFiles.length > 0) {
       handleFileUpload(acceptedFiles[0]);
     }
-  }, []);
+  }, [handleFileUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop,

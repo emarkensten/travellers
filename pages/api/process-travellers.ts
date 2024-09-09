@@ -9,7 +9,16 @@ import xlsx from 'xlsx';
 import pdf from 'pdf-parse';
 import sharp from 'sharp';
 import mammoth from 'mammoth';
-import type { ChatCompletionMessageParam } from 'openai/resources/chat';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+
+// Remove the custom ChatCompletionMessageParam type definition
+
+// ... rest of the imports
+
+// Update the Message type
+type Message = ChatCompletionMessageParam;
+
+// ... rest of the code
 
 export const config = {
   api: {
@@ -114,8 +123,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const content = await readFileContent(file);
       console.log('Content read successfully');
-
-      type Message = ChatCompletionMessageParam;
 
       const messages: Message[] = [
         {

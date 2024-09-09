@@ -20,6 +20,7 @@ This project is a Next.js application that uses AI to extract traveller informat
 - Zod for schema validation
 - Sharp for image processing
 - Various libraries for file parsing (csv-parser, xlsx, pdf-parse, mammoth)
+- shadcn/ui for UI components including toast notifications
 
 ## Getting Started
 

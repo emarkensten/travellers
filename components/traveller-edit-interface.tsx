@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, ChevronRight, AlertCircle, Upload } from 'lucide-react'
 import { Label } from "@/components/ui/label"
-import toast from 'react-hot-toast'
+import { useToast } from "@/hooks/use-toast"
 import { Progress } from "@/components/ui/progress"
 import { z } from 'zod';
 import { useDropzone } from 'react-dropzone'
@@ -64,6 +64,7 @@ export function TravellerEditInterface() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
   const [progressText, setProgressText] = useState('')
+  const { toast } = useToast()
 
   // Define the schema for a single traveller
   const TravellerSchema = z.object({
@@ -125,7 +126,11 @@ export function TravellerEditInterface() {
       setTravellers(prevTravellers => {
         if (!data || !data.travellers || !Array.isArray(data.travellers)) {
           console.error('Invalid data structure received from AI:', data);
-          toast.error("Received invalid data from AI. Please try again.");
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Received invalid data from AI. Please try again.",
+          });
           return prevTravellers;
         }
 
@@ -159,19 +164,34 @@ export function TravellerEditInterface() {
       console.log('Traveller information updated');
       setProgress(100);
       setProgressText('Processing complete!');
-      toast.success("Traveller information updated");
+      toast({
+        title: "Success",
+        description: "Traveller information updated",
+      });
 
     } catch (error) {
       console.error('Error processing file:', error);
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error || error.message;
         console.error('Detailed error:', errorMessage);
-        toast.error(`Failed to process the file: ${errorMessage}`);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: `Failed to process the file: ${errorMessage}`,
+        });
       } else if (error instanceof Error) {
         console.error('Detailed error:', error.message, error.stack);
-        toast.error(error.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
       } else {
-        toast.error("Failed to process the file. Please try again.");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to process the file. Please try again.",
+        });
       }
     } finally {
       setTimeout(() => {

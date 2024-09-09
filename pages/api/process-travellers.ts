@@ -9,6 +9,7 @@ import xlsx from 'xlsx';
 import pdf from 'pdf-parse';
 import sharp from 'sharp';
 import mammoth from 'mammoth';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat';
 
 export const config = {
   api: {
@@ -54,7 +55,7 @@ async function readFileContent(file: formidable.File): Promise<string> {
 
   if (mimetype === 'text/csv') {
     return new Promise((resolve, reject) => {
-      let results: string[] = [];
+      const results: string[] = []; // Changed from 'let' to 'const'
       fs.createReadStream(filepath)
         .pipe(csv())
         .on('data', (data) => results.push(JSON.stringify(data)))
@@ -114,7 +115,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const content = await readFileContent(file);
       console.log('Content read successfully');
 
-      const messages = [
+      type Message = ChatCompletionMessageParam;
+
+      const messages: Message[] = [
         {
           role: "system",
           content: "You are an AI assistant that extracts traveller information from text or images. Extract information for up to 5 travellers. If gender is not explicitly mentioned, make an educated guess based on the name. Look for any information that applies to all passengers. Always use full four-digit years for dates of birth."
@@ -132,7 +135,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-2024-08-06",
-        messages: messages as any, // Type assertion to avoid TypeScript error
+        messages: messages,
         response_format: zodResponseFormat(TravellerResponseSchema, "traveller_information"),
       });
 

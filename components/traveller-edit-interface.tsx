@@ -10,7 +10,6 @@ import { CheckCircle, ChevronRight, AlertCircle, Upload } from 'lucide-react'
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { Progress } from "@/components/ui/progress"
-import { z } from 'zod';
 import { useDropzone } from 'react-dropzone'
 import axios from 'axios';
 import { ModeToggle } from "@/components/mode-toggle"
@@ -67,26 +66,7 @@ export function TravellerEditInterface() {
   const [progressText, setProgressText] = useState('')
   const { toast } = useToast()
 
-  // Define the schema for a single traveller
-  const TravellerSchema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-    dateOfBirth: z.string(),
-    gender: z.string(),
-    nationality: z.string(),
-    disability: z.string().optional(),
-  });
-
-  // Define the schema for the entire response
-  const TravellerResponseSchema = z.object({
-    travellers: z.array(TravellerSchema),
-    globalInfo: z.object({
-      nationality: z.string().optional(),
-      disability: z.string().optional(),
-    }),
-  });
-
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = useCallback(async (file: File) => {
     if (!file) return;
 
     setIsProcessing(true);
@@ -201,7 +181,7 @@ export function TravellerEditInterface() {
         setProgressText('');
       }, 2000); // Keep the progress visible for 2 seconds after completion
     }
-  };
+  }, [toast]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {

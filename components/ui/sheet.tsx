@@ -16,7 +16,8 @@ const SheetClose = SheetPrimitive.Close
 const SheetPortal = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Portal>,
   SheetPrimitive.DialogPortalProps & { className?: string }
->(({ className, children, ...props }, ref) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+>(({ className, children, ...props }, _ref) => (
   <SheetPrimitive.Portal {...props}>
     <div className={cn("fixed inset-0 z-50 flex", className)}>
       {children}

@@ -6,6 +6,7 @@ import csv from 'csv-parser';
 import * as xlsx from 'xlsx';
 import sharp from 'sharp';
 import mammoth from 'mammoth';
+import { Readable } from 'stream';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -47,7 +48,6 @@ async function readFileContent(file: File): Promise<string> {
   if (mimetype === 'text/csv') {
     return new Promise((resolve, reject) => {
       const results: string[] = [];
-      const { Readable } = require('stream');
       const stream = Readable.from(Buffer.from(buffer));
       stream
         .pipe(csv())

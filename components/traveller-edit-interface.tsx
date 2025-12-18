@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress"
 import { z } from 'zod';
 import { useDropzone } from 'react-dropzone'
 import axios from 'axios';
+import { ModeToggle } from "@/components/mode-toggle"
 
 type Traveller = {
   id: number
@@ -208,7 +209,7 @@ export function TravellerEditInterface() {
     }
   }, [handleFileUpload]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
       'text/plain': ['.txt'],
@@ -224,16 +225,16 @@ export function TravellerEditInterface() {
   });
 
   const handleEditTraveller = (traveller: Traveller) => {
-    setSelectedTraveller({...traveller}); // Create a new object to ensure state update
+    setSelectedTraveller({ ...traveller }); // Create a new object to ensure state update
     setIsSheetOpen(true);
   }
 
   const handleSaveTraveller = () => {
     if (selectedTraveller) {
-      setTravellers(prevTravellers => 
-        prevTravellers.map(t => 
-          t.id === selectedTraveller.id 
-            ? { ...selectedTraveller, isComplete: isCompleted(selectedTraveller) } 
+      setTravellers(prevTravellers =>
+        prevTravellers.map(t =>
+          t.id === selectedTraveller.id
+            ? { ...selectedTraveller, isComplete: isCompleted(selectedTraveller) }
             : t
         )
       )
@@ -250,10 +251,10 @@ export function TravellerEditInterface() {
 
   const isCompleted = (traveller: Traveller) => {
     return Boolean(
-      traveller.firstName && 
-      traveller.lastName && 
-      traveller.dateOfBirth && 
-      traveller.nationality && 
+      traveller.firstName &&
+      traveller.lastName &&
+      traveller.dateOfBirth &&
+      traveller.nationality &&
       traveller.nationality !== 'Unknown' && // Add this check
       traveller.gender &&
       traveller.disability !== undefined
@@ -262,7 +263,10 @@ export function TravellerEditInterface() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Uppgifter om resenärer</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Uppgifter om resenärer</h1>
+        <ModeToggle />
+      </div>
       <div className="space-y-2">
         {travellers.map((traveller) => (
           <Card key={traveller.id} className="cursor-pointer" onClick={() => handleEditTraveller(traveller)}>
@@ -281,7 +285,7 @@ export function TravellerEditInterface() {
 
       <div className="mt-4">
         <div {...getRootProps()} className={`cursor-pointer ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
-          <div className="flex items-center justify-center w-full p-4 text-center border-2 border-dashed rounded-md hover:bg-gray-50">
+          <div className="flex items-center justify-center w-full p-4 text-center border-2 border-dashed rounded-md hover:bg-gray-50 dark:hover:bg-gray-800">
             <input {...getInputProps()} />
             <div>
               <Upload className="w-8 h-8 mx-auto mb-2" />
@@ -307,7 +311,7 @@ export function TravellerEditInterface() {
       )}
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent className="w-[400px] sm:w-[540px] bg-white !bg-opacity-100">
+        <SheetContent className="w-[400px] sm:w-[540px]">
           <SheetHeader>
             <SheetTitle>Ändra uppgifter för Vuxen 18+</SheetTitle>
             <SheetDescription>
@@ -318,39 +322,39 @@ export function TravellerEditInterface() {
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">Förnamn <span className="text-red-500">*</span></Label>
-                <Input 
+                <Input
                   id="firstName"
-                  name="firstName" 
-                  value={selectedTraveller.firstName} 
+                  name="firstName"
+                  value={selectedTraveller.firstName}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Efternamn <span className="text-red-500">*</span></Label>
-                <Input 
+                <Input
                   id="lastName"
-                  name="lastName" 
-                  value={selectedTraveller.lastName} 
+                  name="lastName"
+                  value={selectedTraveller.lastName}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">Födelsedatum (8 siffror ÅÅÅÅMMDD) <span className="text-red-500">*</span></Label>
-                <Input 
+                <Input
                   id="dateOfBirth"
-                  name="dateOfBirth" 
-                  value={selectedTraveller.dateOfBirth} 
+                  name="dateOfBirth"
+                  value={selectedTraveller.dateOfBirth}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="nationality">Nationalitet <span className="text-red-500">*</span></Label>
-                <Select 
+                <Select
                   value={selectedTraveller.nationality}
-                  onValueChange={(value) => setSelectedTraveller({...selectedTraveller, nationality: value})}
+                  onValueChange={(value) => setSelectedTraveller({ ...selectedTraveller, nationality: value })}
                 >
                   <SelectTrigger id="nationality">
                     <SelectValue placeholder="Välj nationalitet" />
@@ -368,7 +372,7 @@ export function TravellerEditInterface() {
                 <Label htmlFor="gender">Kön <span className="text-red-500">*</span></Label>
                 <Select
                   value={selectedTraveller.gender}
-                  onValueChange={(value) => setSelectedTraveller({...selectedTraveller, gender: value})}
+                  onValueChange={(value) => setSelectedTraveller({ ...selectedTraveller, gender: value })}
                 >
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="Välj kön" />
@@ -384,7 +388,7 @@ export function TravellerEditInterface() {
                 <Label htmlFor="disability">Funktionshinder</Label>
                 <Select
                   value={selectedTraveller.disability}
-                  onValueChange={(value) => setSelectedTraveller({...selectedTraveller, disability: value})}
+                  onValueChange={(value) => setSelectedTraveller({ ...selectedTraveller, disability: value })}
                 >
                   <SelectTrigger id="disability">
                     <SelectValue placeholder="Välj funktionshinder" />
@@ -400,10 +404,10 @@ export function TravellerEditInterface() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="memberNumber">Medlemsnummer</Label>
-                <Input 
+                <Input
                   id="memberNumber"
-                  name="memberNumber" 
-                  value={selectedTraveller.memberNumber} 
+                  name="memberNumber"
+                  value={selectedTraveller.memberNumber}
                   onChange={handleInputChange}
                 />
               </div>

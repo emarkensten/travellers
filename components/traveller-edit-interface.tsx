@@ -327,6 +327,8 @@ export function TravellerEditInterface() {
                   name="firstName"
                   value={selectedTraveller.firstName}
                   onChange={handleInputChange}
+                  autoComplete="off"
+                  data-1p-ignore
                   required
                 />
               </div>
@@ -337,6 +339,8 @@ export function TravellerEditInterface() {
                   name="lastName"
                   value={selectedTraveller.lastName}
                   onChange={handleInputChange}
+                  autoComplete="off"
+                  data-1p-ignore
                   required
                 />
               </div>
@@ -347,6 +351,8 @@ export function TravellerEditInterface() {
                   name="dateOfBirth"
                   value={selectedTraveller.dateOfBirth}
                   onChange={handleInputChange}
+                  autoComplete="off"
+                  data-1p-ignore
                   required
                 />
               </div>
@@ -409,6 +415,8 @@ export function TravellerEditInterface() {
                   name="memberNumber"
                   value={selectedTraveller.memberNumber}
                   onChange={handleInputChange}
+                  autoComplete="off"
+                  data-1p-ignore
                 />
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
